@@ -6,12 +6,10 @@
 <body>
 
 
-
 <h1> This is work in progress </h1>
 
-
 <h1>My C# coding styles guidelines</h1>
-	
+
 This coding guideline should help you write cleaner and more expressive C# code. It's my own (and i really emphasis own here) pespective on what makes
 code better and easier to read. 
 <br/>
@@ -45,6 +43,7 @@ When reading code the variable location is not important and "Find all reference
 - Constants
 <br/>
 Constants should be declared all in uppercase :
+<br/>
 <code>
    public int FIXED_WEIGTH = 44;
 </code>
@@ -56,25 +55,26 @@ Uppecase makes the constant values stand out when reading the code and it makes 
 <br/>
 Don't use the var keyboard (unless you write a LINQ query which returns a anonymous object because var is the only thing you can use in this situation).
 Consider the following piece of code :
-
+<br/>
 <code>
    var stuff = GetMyStuff();	
 </code> 
-
-This code can't be understood at first glance. C# is a strong typed language and the actualy type is what;s missing there.
-
+<br/>
+This code can't be understood at first glance. You're writing code in a strong typed language and the actualy type is not visible there.
 
 <br/>
 <br/>
 - Lamda expressions (versus anonymous functions)
 <br/>
 Personally i consider anonymous methods to be obsolette and encourage anyone to use lamdas everywhere. This code
+<br/>
 <code>
 		all.Find(delegate(e){
 			return e.IsAvailable;
 		})
 </code>
 has to much ceremony over this version
+<br/>
 <code>
 	   all.Find(examples.IsAvailable);		
 </code>
@@ -86,22 +86,26 @@ collection's name.
 <br/>
 
 - LINQ queries
-Personally i'm not a big fan of the LINQ query syntax 
+Personally i'm not a big fan of the LINQ query syntax
+<br/> 
 <code>
 	IEnumerable<int> numQuery1 = from num in numbers where num % 2 == 0 orderby num select num;
 </code>
-and i do prefer to use method syntax 	
+<br/>
+and i do prefer to use method syntax
+<br/> 	
 <code>
 	IEnumerable<int> numQuery2 = numbers.Where(num => num % 2 == 0).OrderBy(n => n);	  
 </code>
-
+<br/>
 The reason is both code readability ( i find it a lot easier to read the method names rather than scan the code for the SQL like keywords) and also
 because you're not actually writing SQL there : just the fact that 'query' has to start with from instead  of select 
 (i know the reason for this, it's intelisense) but it's still something that somehow resambles SQL instead of the real deal.
 	  
 
 
-
+<br/>
+<br/>
 
 <h4 id="#indentation">Indentation levels</h4>
 Use tabs for indentation instead of spaces. The indent size should be 4 (i find 2 too narrow, specially when you read code on a +24 inch monitor and 8 too wasteful).

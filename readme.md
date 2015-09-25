@@ -21,16 +21,25 @@ However, the most important thing about coding guidelines is that you should hav
 #### Language Constructs
 
 - Constants  
-Constants should be declared all in uppercase : `public int FIXED_WEIGTH = 44;` Uppecase makes the constant values stand out when reading the code and it makes it very clear that particular value won't be changed anywhere in the code.  
+Constants should be declared all in uppercase :  
+`public int FIXED_WEIGTH = 44;` Uppecase makes the constant values stand out when reading the code and it makes it very clear that particular value won't be changed anywhere in the code.  
 
 - var keyword.  
-Don't use the var keyboard (unless you write a LINQ query which returns a anonymous object because var is the only thing you can use in this situation). Consider the following piece of code : `var stuff = GetMyStuff();` This code can't be understood at first glance. C# is a strong typed language and the actualy type is what;s missing there.  
+Don't use the var keyboard (unless you write a LINQ query which returns a anonymous object because var is the only thing you can use in this situation). Consider the following piece of code :  
+`var stuff = GetMyStuff();`  
+This code can't be understood at first glance. You're writing code in a strong typed language and the actualy type is not visible there.  
 
 - Lamda expressions (versus anonymous functions)  
-Personally i consider anonymous methods to be obsolette and encourage anyone to use lamdas everywhere. This code `all.Find(delegate(e){ return e.IsAvailable; })` has to much ceremony over this version `all.Find(examples.IsAvailable);`  
+Personally i consider anonymous methods to be obsolette and encourage anyone to use lamdas everywhere. This code  
+`all.Find(delegate(e){ return e.IsAvailable; })` has to much ceremony over this version  
+`all.Find(examples.IsAvailable);`  
 With lambda expression just keep in mind that you should use a descriptive names to the lamda parameters IF you using more than one parameter (so don't use one char variables). If you have a single parameter it's fine to use a single char because you should infer the type from the collection's name.  
 
-- LINQ queries Personally i'm not a big fan of the LINQ query syntax `IEnumerable <int>numQuery1 = from num in numbers where num % 2 == 0 orderby num select num;</int> `and i do prefer to use method syntax `IEnumerable <int>numQuery2 = numbers.Where(num => num % 2 == 0).OrderBy(n => n);</int> `The reason is both code readability ( i find it a lot easier to read the method names rather than scan the code for the SQL like keywords) and also because you're not actually writing SQL there : just the fact that 'query' has to start with from instead of select (i know the reason for this, it's intelisense) but it's still something that somehow resambles SQL instead of the real deal.
+- LINQ queries Personally i'm not a big fan of the LINQ query syntax  
+`IEnumerable <int>numQuery1 = from num in numbers where num % 2 == 0 orderby num select num;</int>`  
+and i do prefer to use method syntax  
+`IEnumerable <int>numQuery2 = numbers.Where(num => num % 2 == 0).OrderBy(n => n);</int>`  
+The reason is both code readability ( i find it a lot easier to read the method names rather than scan the code for the SQL like keywords) and also because you're not actually writing SQL there : just the fact that 'query' has to start with from instead of select (i know the reason for this, it's intelisense) but it's still something that somehow resambles SQL instead of the real deal.  
 
 #### Indentation levels
 
