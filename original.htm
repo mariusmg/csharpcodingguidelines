@@ -1,10 +1,8 @@
 <html>
 
 <head>
-</head>
-
 <body>
-
+</head>
 
 <h1> This is work in progress </h1>
 
@@ -19,19 +17,25 @@ Even if you work alone and not part of a team, you should strive to make your co
 <br/>
 
    <ol>
+	    <li><a href="#generic_advices">Generic Advices</a></li> 
 	    <li><a href="#language_constructs">Language constructs</a></li> 
+	    <li><a href="#language_constructs">Code comments</a></li>
 		<li><a href="#indentation">Indentation levels</a></li>
 		<li><a href="#linelength">Line length</a></li>
-		<li>Line break</li>
+		<li><a href="#linebreaking">Line break</a></li>
+		
+		
 	</ol>
 
 
-<h4>Generic advices</h4>
+<h4 id="#generic_advices">Generic advices</h4>
 - use long descriptive names. Don't try to shorten names needlessly. You're writing code in a IDE, you're not typing all characters eachtime.
 <br/>
 - don't use abbreviation unless it's a very well know term. 
 <br/>
-- keep in mind the quality of the variable names usually makes the difference between shitty and good code.
+- keep in mind the quality of the variable names usually makes the difference between easely understandable code and incomprehesible one.
+<br/>
+- English should be the only language used.
 <br/>
 - don't use _ (or any other character for that matter) to abbreviate variables based on their location.
 When reading code the variable location is not important and "Find all references" will "fix" this immediately.  
@@ -47,6 +51,7 @@ Constants should be declared all in uppercase :
 <code>
    public int FIXED_WEIGTH = 44;
 </code>
+<br/>
 Uppecase makes the constant values stand out when reading the code and it makes it very clear that particular value won't be changed anywhere in the code.
 
 <br/>
@@ -73,6 +78,7 @@ Personally i consider anonymous methods to be obsolette and encourage anyone to 
 			return e.IsAvailable;
 		})
 </code>
+<br/>
 has to much ceremony over this version
 <br/>
 <code>
@@ -82,14 +88,18 @@ has to much ceremony over this version
 With lambda expression just keep in mind that you should use a descriptive names to the lamda parameters IF you using more than one parameter
 (so don't use one char variables). If you have a single parameter it's fine to use a single char because you should infer the type from the 
 collection's name.
- <br/>
+<br/>
 <br/>
 
 - LINQ queries
 Personally i'm not a big fan of the LINQ query syntax
 <br/> 
 <code>
-	IEnumerable<int> numQuery1 = from num in numbers where num % 2 == 0 orderby num select num;
+	IEnumerable<int> numQuery1 = from num in numbers
+				 <br/>
+				 where num % 2 == 0 
+				 <br/>
+				 orderby num select num;
 </code>
 <br/>
 and i do prefer to use method syntax
@@ -100,28 +110,42 @@ and i do prefer to use method syntax
 <br/>
 The reason is both code readability ( i find it a lot easier to read the method names rather than scan the code for the SQL like keywords) and also
 because you're not actually writing SQL there : just the fact that 'query' has to start with from instead  of select 
-(i know the reason for this, it's intelisense) but it's still something that somehow resambles SQL instead of the real deal.
-	  
-
-
+(i know the reason for this, it's mostly related to providing intelisense) but it's still something that somehow resembles SQL instead of the real deal.
+  	  
 <br/>
 <br/>
+- 
+
+
+
+
+<h4 id="#code_comments">Code comments</h4>
+I'm a firm believer of commenting code JUST when it needs comments. I see no value of littering the code with useless, obvious comments.
+<br/>
+Comments should be concise, to the point and most importantly they should explain the WHY is something done in a certain way.
+
+  
+
+ 
+ 
+ 
+
+
 
 <h4 id="#indentation">Indentation levels</h4>
-Use tabs for indentation instead of spaces. The indent size should be 4 (i find 2 too narrow, specially when you read code on a +24 inch monitor and 8 too wasteful).
+I use tabs for indentation because tabs are condifurable while spaces aren't. The indent size i use is 4 (i find 2 too narrow, specially when you read code on a +24 inch monitor and 8 too wasteful).
 <br/>
-<div class="info">
-	Tools/Options/Text Editor/C# to configure the indentation.
-<div>
+<code>
+    Is Visual Studio open Tools/Options/Text Editor/C# to configure the indentation.
 <br/>
+</code>
 
 <h4 id="#linelength">Line length</h4>
-This is usually a touchy topic among any team members. My advice is not to have a fixed length but "chop" the line where it makes sense. I personally find that having a fixed line length makes it harder to read the code in different scenarios (for instance....having the line length set to 80 chars makes the code look bad on a 24' 1080p monitor because the entire right side of the editor will be unused. Likewise having a 140 line length will be annoying when trying to code on a 14' laptop because you'll have to scroll horizontally all the time).
+This is usually a touchy topic. My advice is not to have a fixed length but "chop" the line where it makes sense. I personally find that having a fixed line length makes it harder to read the code in different scenarios (for instance....having the line length set to 80 chars makes the code look bad on a 24' 1080p monitor because the entire right side of the editor will be unused. Likewise having a 140 line length will be annoying when trying to code on a 14' laptop because you'll have to scroll horizontally all the time).
 <br/>
 
-
 <h4 id="#linebreaking">Line breaking </h4>
-First thing first. Brackets always go on separate lines :
+First thing first. Brackets *always* go on separate lines :
 <br/>
 <code>
    public void DoStuff()
@@ -139,6 +163,27 @@ Never
 	}
 </code>
 
+
+<h4 id="Member structure">
+
+Inside a class my structure is always the same  ( from top to bottom): 
+<br/>
+- constants and readonly fields;
+<br/>
+- private and public variables.
+<br/>
+- delegates/events
+<br/>
+- constrctors
+<br/>
+- properties
+<br/>
+- methods 
+
+
+
+  
+ 
 
 
 
