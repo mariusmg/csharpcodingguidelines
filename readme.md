@@ -6,10 +6,8 @@ However, the most important thing about coding guidelines is that you should hav
 1.  Generic advices
 2.  Language constructs
 3.  Code comments
-4.  Tabs. Always tabs
-5.  Line length
-6.  Formatting
-7.  Class member structure
+4.  Formatting
+5.  Class member structure
 
 #### Generic advices :
 
@@ -23,6 +21,7 @@ However, the most important thing about coding guidelines is that you should hav
 - a function / method should do 1 thing and 1 thing only. Split the implementation over multiple smaller methods.
 - always remove dead and commented code. There's no point in keeping that (you always have source control to get back to old code ).
 - strive to make code as unambiguous as possible. Ambiguity ALWAYS creates problems.
+- 
 
 #### Language constructs
 
@@ -133,23 +132,34 @@ Putting the else part first makes code more readable :
     //continue here
 
 
+#### Static vs instance
+Don't overdo it with with static methods. Understand the tradeoffs of static methods and always make sure you are not modifying shared state from static methods (be especially careful with this in the context of web apps). 
+
+#### Deal with nulls 
+Use the null coalescing and null traversal operator to deal with null objects / graph of objects with null properties.
+Also you can really decrease the number of NullReferenceExceptions in your code by using a C# implementation of Maybe monad (look it up on GitHub, you'll find plenty).  The idea is to never return null from your own methods but always return a instance of the Maybe type.  
+
+
 #### Code comments
 
 Comment code JUST when it needs comments. I see no value of littering the code with useless, obvious comments (green noise). Comments should be concise, to the point and most importantly they should explain the WHY is something done in a certain way.
 
-#### Tabs. Always tabs
-
-I use tabs for indentation because tabs are configurable while spaces aren't. The tab + indent size i use is 3 because it strikes a nice balance between usability and compactness. In Visual Studio open Tools/Options/Text Editor/C# to configure the indentation.
-
-#### Line length
-
-This is usually a touchy topic. My advice is not to have a fixed length but "chop" the line where it makes sense. I personally find that having a fixed line length makes it harder to read the code in different scenarios (for instance....having the line length set to 80 chars makes the code look bad on a 24' 1080p monitor because the entire right side of the editor will be unused. Likewise having a 140 line length will be annoying when trying to code on a 14' laptop because you'll have to scroll horizontally all the time).  
 
 #### Formatting
 
-######  Brackets
 
-Brackets *always* go on separate lines :
+##### Tabs. Always tabs
+
+I use tabs for indentation because tabs are configurable while spaces aren't. The tab + indent size i use is 3 because it strikes a nice balance between usability and compactness. In Visual Studio open Tools/Options/Text Editor/C# to configure the indentation.
+
+##### Line length
+
+This is usually a touchy topic. My advice is not to have a fixed length but "chop" the line where it makes sense. I personally find that having a fixed line length makes it harder to read the code in different scenarios (for instance....having the line length set to 80 chars makes the code look bad on a 24' 1080p monitor because the entire right side of the editor will be unused. Likewise having a 140 line length will be annoying when trying to code on a 14' laptop because you'll have to scroll horizontally all the time).  
+
+
+#####  Braces
+
+Braces *always* go on separate lines (and braces are NOT optional) :
 
     public void DoStuff()  
     {  
@@ -160,9 +170,14 @@ Don't do :
     public void DoStuff(){  
     }
 
+And do not :
+
+    if(something)
+        Blah();
+        
 One nice thing about this rule is that, if you respect it, it's much easier to jump between C# and Javascript/TypeScript code in web projects. 
 
-######  Empty lines ?
+#####  Empty lines ?
 
 Leave 1 empty line between different members, don't format code like this :
 
