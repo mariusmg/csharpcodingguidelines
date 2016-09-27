@@ -21,7 +21,6 @@ However, the most important thing about coding guidelines is that you should hav
 - a function / method should do 1 thing and 1 thing only. Split the implementation over multiple smaller methods.
 - always remove dead and commented code. There's no point in keeping that (you always have source control to get back to old code ).
 - strive to make code as unambiguous as possible. Ambiguity ALWAYS creates problems.
-- 
 
 #### Language constructs
 
