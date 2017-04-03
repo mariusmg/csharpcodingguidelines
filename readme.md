@@ -1,6 +1,6 @@
 ## C# coding guideline
 
-This succint coding guideline should help you write cleaner and more expressive C# code. It's my own (and i really emphasis own here) perspective on what makes code better and easier to read.  
+This coding guideline aims to help you write cleaner and more expressive C# code. It's my own (and i really emphasis own here) perspective on what makes code better and easier to read.  
 However, the most important thing about coding guidelines is that you should have one. Even if you work alone and not part of a team, you should strive to make your code uniform and respect some coding guidelines.  
 
 1.  Generic advices
@@ -21,6 +21,40 @@ However, the most important thing about coding guidelines is that you should hav
 - a function / method should do 1 thing and 1 thing only. Split the implementation over multiple smaller methods.
 - always remove dead and commented code. There's no point in keeping that (you always have source control to get back to old code ).
 - strive to make code as unambiguous as possible. Ambiguity ALWAYS creates problems.
+
+
+#### Good control the flow:
+
+Generally the structure of each method should be grouped like this :
+
+- input parameter validation 
+
+- additional logic validation
+
+- the main logic of the method
+
+- exception handling/logging/disposing of resources which usually wraps the method implementation.
+
+
+The trick to writing methods with easy to understand control flow is to stick as close as possible to the structure outlined above and have max 3 levels of indentation in the logic of the method. Anything else should be split into separate/inner functions. 
+
+Also in C# 7 support for local functions has been added , which also for some rather interesting code structure (eg you can "isolate" parts of code in local functions and chain them together to do the final processing)
+
+     public int ProcessThisStuff(int input)
+	 {
+			int ProcessThis(int ix)
+			{
+				return 42 + ix;
+			}
+
+			int ProcessThat(int x)
+			{
+				return 109 + x;
+			}
+
+			return ProcessThat((ProcessThis(input)));
+
+	 }
 
 #### Language constructs
 
@@ -71,7 +105,7 @@ C#6 added string interpolation . Use it because its a lot cleaner compared with 
     
     log.Write(string.Format("This stuff has value {0}, and it ends with {1}, firstName, age));
     
-###### Use enums to pass statuses instead of strings
+###### Always use enums to pass statuses instead of strings
     Bad:
     
     public void DoMonkeyStuff(string status)
@@ -98,7 +132,14 @@ C#6 added string interpolation . Use it because its a lot cleaner compared with 
         }
     }
     
-    You're writing code in a static typed language, so just let the compiler cacth as many stuff as possible at compile time (instead of runtime).
+    You're writing code in a static typed language, so just let the compiler cacth as many stuff as possible at compile time (instead of runtime). Also be aware when returning bool from method which should act as statuses. True/False are fine at the begginging but if there is a chnace to also have to support something like NotSet, don't go with bools, just use a enum with a strcture like this:
+
+    public enum GenericStatus
+    {
+        NotSet,
+        Correct,
+        Incorrect,
+    }
 
 ######   Exceptions 
 
@@ -138,18 +179,36 @@ Don't overdo it with with static methods. Understand the tradeoffs of static met
 Use the null coalescing and null traversal operator to deal with null objects / graph of objects with null properties.
 Also you can really decrease the number of NullReferenceExceptions in your code by using a C# implementation of Maybe monad (look it up on GitHub, you'll find plenty).  The idea is to never return null from your own methods but always return a instance of the Maybe type.  
 
+#### Use the force, Luke. Also tuples 
+C# 7 has , finally, nice support for tuples. Use "named tuples" are return types when you need to return numtiple values from a method.
+
+    (bool isHuman, ComplexType ctype) result = MethodWhichReturnsTwoValues();
 
 #### Code comments
 
 Comment code JUST when it needs comments. I see no value of littering the code with useless, obvious comments (green noise). Comments should be concise, to the point and most importantly they should explain the WHY is something done in a certain way.
 
+#### Use expression bodied members
+
+    public MyUberType SuperProperty
+    {
+        get
+        {
+            return mySuperPropertyField;
+        }
+    }
+
+    can be shorten to 
+
+    public MyUberType SuperProperty => return mySuperPropertyField;
 
 #### Formatting
-
 
 ##### Tabs. Always tabs
 
 I use tabs for indentation because tabs are configurable while spaces aren't. The tab + indent size i use is 3 because it strikes a nice balance between usability and compactness. In Visual Studio open Tools/Options/Text Editor/C# to configure the indentation.
+Also is important not to mix tabs and spaces inside of the same file. If you started using one , please stick with it.
+
 
 ##### Line length
 
