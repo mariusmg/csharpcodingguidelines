@@ -99,7 +99,7 @@ The reason is both code readability ( i find it a lot easier to read the method 
 ###### String interpolation FTW
 C#6 added string interpolation . Use it because its a lot cleaner compared with string.Format()
     
-    log.Write("This stuff has value {firstName} and it ends with {age}); 
+    log.Write($"This stuff has value {firstName} and it ends with {age}); 
     
     versus
     
