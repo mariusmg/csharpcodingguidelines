@@ -11,19 +11,20 @@ However, the most important thing about coding guidelines is that you should hav
 
 #### Generic advices :
 
-- use long descriptive names. Don't shorten names needlessly. You have Intellisense, you're not typing all characters each time.  
+- use long, descriptive names. Don't shorten names without a good reason. You have Intellisense, you're not typing each character each time.  
 - don't use abbreviation unless it's a very well know term.  
 - keep in mind the quality of the variable names usually makes the difference between easily understandable code and incomprehensible one.  
 - English should be the only language used when writing both code and comments.  
 - don't use _ (or any other character for that matter) to abbreviate variables based on their location. When reading code the variable location is not important and "Find all references" gives this information when needed.  
-- succinct code is overall better as long as you don't overdo it (remeber that ultimate goal is always code which is as easy as possible to grok ).  
+- succinct code is overall better as long as you don't overdo it (remeber that ultimate goal is always code which is easy to understand ).  
 - declare variables as close as possible to actual usage.  
 - a function / method should do 1 thing and 1 thing only. Split the implementation over multiple smaller methods.
 - always remove dead and commented code. There's no point in keeping that (you always have source control to get back to old code ).
 - strive to make code as unambiguous as possible. Ambiguity ALWAYS creates problems.
+- a method can have only one Func<T> parameter. Also don't Func<T> should never use as a parameter/return another Func<T>
 
 
-#### Good control the flow:
+#### Code flow:
 
 Generally the structure of each method should be grouped like this :
 
@@ -36,23 +37,23 @@ Generally the structure of each method should be grouped like this :
 - exception handling/logging/disposing of resources which usually wraps the method implementation.
 
 
-The trick to writing methods with easy to understand control flow is to stick as close as possible to the structure outlined above and have max 3 levels of indentation in the logic of the method. Anything else should be split into separate/inner functions. 
+The trick to writing methods with easy to understand control flow is to stick as close as possible to the structure outlined above and have max 3 levels of indentation in the logic of the method. Anything else should be split into separate functions. 
 
-Also in C# 7 support for local functions has been added , which also for some rather interesting code structure (eg you can "isolate" parts of code in local functions and chain them together to do the final processing)
+Also in C# 7 support for local functions has been added , which also for some rather interesting code structure (eg you can "isolate" parts of code in local functions and chain them together to do the final processing). Feel free to use it, but never have more than 2 local functions.
 
      public int ProcessThisStuff(int input)
 	 {
-			int ProcessThis(int ix)
-			{
-				return 42 + ix;
-			}
+		int ProcessThis(int ix)
+		{
+			return 42 + ix;
+		}
 
-			int ProcessThat(int x)
-			{
-				return 109 + x;
-			}
+		int ProcessThat(int x)
+		{
+			return 109 + x;
+		}
 
-			return ProcessThat((ProcessThis(input)));
+		return ProcessThat((ProcessThis(input)));
 
 	 }
 
@@ -175,12 +176,39 @@ Putting the else part first makes code more readable :
 #### Static vs instance
 Don't overdo it with with static methods. Understand the tradeoffs of static methods and always make sure you are not modifying shared state from static methods (be especially careful with this in the context of web apps). 
 
-#### Deal with nulls 
+#### Dealing with nulls 
 Use the null coalescing and null traversal operator to deal with null objects / graph of objects with null properties.
-Also you can really decrease the number of NullReferenceExceptions in your code by using a C# implementation of Maybe monad (look it up on GitHub, you'll find plenty).  The idea is to never return null from your own methods but always return a instance of the Maybe type.  
+Also you can really decrease the number of NullReferenceExceptions in your code by using a C# implementation of Maybe monad (i have a implementation [here](https://github.com/mariusmg/Microruntime/blob/master/MicroRuntime/Maybe.cs) for example).  The idea is to never return null from your own methods but always return a instance of Maybe for reference type.
+
+    MyCustomType tp = GetMyStuff();
+
+    DoOtherStuff(tp)
+    {
+        tp.MyInstanceMethod();
+    }
+
+    tp.DoOtherStuff();
+
+If you forget the null check for tp instance, you'll get a NullReferenceException. Using a Maybe monad, is a lot simpler
+
+     Maybe<MyCustomType> tp = GetMyStuff();
+
+    if(tp.HasValue)   
+    {
+        
+    }
+
+Evaluating boolean nullable fields/properties in ifs is very simple with the null coalescing operator by return false as default value:
+
+    bool? hasFlag;
+
+    if(hasFlag ?? false)
+    {
+
+    }
 
 #### Use the force, Luke. Also tuples 
-C# 7 has , finally, nice support for tuples. Use "named tuples" are return types when you need to return numtiple values from a method.
+C# 7 has , finally, nice support for tuples. Use "named tuples" as return types when you need to return multiple values from a method.
 
     (bool isHuman, ComplexType ctype) result = MethodWhichReturnsTwoValues();
 
@@ -286,7 +314,7 @@ Leave the code some room to breathe , don't mush everything together.
 
 #### Member structure
 
-Try to have a fixed memeber structure inside a class. Overall it just makes code easier to read/follow. My structure is always the same ( from top to bottom):  
+Try to have a fixed member structure inside a class. Overall it just makes code easier to read/follow. My structure is always the same ( from top to bottom):  
 - constants and readonly fields;  
 - private and public variables.  
 - delegates/events  
